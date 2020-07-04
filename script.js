@@ -8,29 +8,29 @@ const gameScore = document.getElementById('score'),
 let main = document.querySelector('.main'),
     // newLine = new Array(10).fill(0),
     // playfield = Array(20).fill(newLine),
-
-    playfield = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ],
+    newGame = false,
+playfield = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+],
     score = 0,
     currentLevel = 1,
     isPaused = true,
@@ -38,27 +38,27 @@ let main = document.querySelector('.main'),
     possibleLevels = {
         1: {
             scorePerLine: 10,
-            speed: 400,
-            nextLevelScore: 20
+            speed: 450,
+            nextLevelScore: 40
         },
         2: {
             scorePerLine: 15,
-            speed: 350,
-            nextLevelScore: 50
+            speed: 400,
+            nextLevelScore: 100
         },
         3: {
             scorePerLine: 20,
-            speed: 300,
-            nextLevelScore: 100
+            speed: 350,
+            nextLevelScore: 200
         },
         4: {
             scorePerLine: 30,
-            speed: 250,
-            nextLevelScore: 200,
+            speed: 300,
+            nextLevelScore: 400,
         },
         5: {
             scorePerLine: 40,
-            speed: 200,
+            speed: 250,
             nextLevelScore: Infinity,
         },
     },
@@ -149,17 +149,6 @@ function getNewTetro() {
     }
 }
 
-function addActiveTetro() {
-    removePrevTetro();
-    for (let y = 0; y < activeTetro.shape.length; y++) {
-        for (let x = 0; x < activeTetro.shape[y].length; x++) {
-            if (activeTetro.shape[y][x]) {
-                playfield[activeTetro.y + y][activeTetro.x + x] = activeTetro.shape[y][x];
-            }
-        }
-    }
-}
-
 function removePrevTetro() {
     for (let y = 0; y < playfield.length; y++) {
         for (let x = 0; x < playfield[y].length; x++) {
@@ -167,6 +156,27 @@ function removePrevTetro() {
                 playfield[y][x] = 0;
             }
         }
+    }
+}
+
+function addActiveTetro() {
+    removePrevTetro();
+    for (let y = 0; y < activeTetro.shape.length; y++) {
+        for (let x = 0; x < activeTetro.shape[y].length; x++) {
+            if (activeTetro.shape[y][x] === 1) {
+                playfield[activeTetro.y + y][activeTetro.x + x] = activeTetro.shape[y][x];
+            }
+        }
+    }
+}
+
+function rotateTetro() {
+    const prevTetroState = activeTetro.shape;
+    activeTetro.shape = activeTetro.shape[0].map((value, index) =>
+        activeTetro.shape.map((row) => row[index]).reverse()
+    );
+    if (hasCollision()) {
+        activeTetro.shape = prevTetroState;
     }
 }
 
@@ -183,6 +193,57 @@ function hasCollision() {
         }
     }
     return false;
+}
+
+function removeFullLine() {
+    let newLine = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+        fullLine = true,
+        filledLines = 0;
+    for (let y = 0; y < playfield.length; y++) {
+        for (let x = 0; x < playfield[y].length; x++) {
+            if (playfield[y][x] !== 2) {
+                fullLine = false;
+                break;
+            }
+        }
+        if (fullLine) {
+            playfield.splice(y, 1);
+            playfield.splice(0, 0, newLine);
+            filledLines += 1;
+        }
+        fullLine = true;
+    }
+    switch (filledLines) {
+        case 1:
+            score += possibleLevels[currentLevel].scorePerLine;
+            break;
+        case 2:
+            score += possibleLevels[currentLevel].scorePerLine * 2;
+            break;
+        case 3:
+            score += possibleLevels[currentLevel].scorePerLine * 4;
+            break;
+        case 4:
+            score += possibleLevels[currentLevel].scorePerLine * 4;
+            break;
+    }
+
+    gameScore.innerHTML = score;
+
+    if (score >= possibleLevels[currentLevel].nextLevelScore) {
+        currentLevel++;
+        gameLevel.innerHTML = currentLevel;
+    }
+}
+
+function fixTetro() {
+    for (let y = playfield.length - 1; y >= 0; y--) {
+        for (let x = 0; x < playfield[y].length; x++) {
+            if (playfield[y][x] === 1) {
+                playfield[y][x] = 2;
+            }
+        }
+    }
 }
 
 function moveTetroDown() {
@@ -207,100 +268,8 @@ function dropTetro() {
             break;
         }
     }
+    // debugger;
 }
-
-function fixTetro() {
-    for (let y = playfield.length - 1; y >= 0; y--) {
-        for (let x = 0; x < playfield[y].length; x++) {
-            if (playfield[y][x] === 1) {
-                playfield[y][x] = 2;
-            }
-        }
-    }
-}
-
-function rotateTetro() {
-    const prevTetroState = activeTetro.shape;
-    activeTetro.shape = activeTetro.shape[0].map((value, index) =>
-        activeTetro.shape.map((row) => row[index]).reverse()
-    );
-    if (hasCollision()) {
-        activeTetro.shape = prevTetroState;
-    }
-}
-
-function removeFullLine() {
-    let newLine = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
-        fullLine = true,
-        filledLines = 0;
-
-    for (let y = 0; y < playfield.length; y++) {
-        for (let x = 0; x < playfield[y].length; x++) {
-            if (playfield[y][x] !== 2) {
-                fullLine = false;
-                break;
-            }
-        }
-        if (fullLine) {
-            playfield.splice(y, 1);
-            playfield.splice(0, 0, newLine);
-            filledLines += 1;
-        }
-        fullLine = true;
-    }
-    switch (filledLines) {
-        case 1:
-            score += possibleLevels[currentLevel].scorePerLine;
-            break;
-        case 2:
-            score += possibleLevels[currentLevel].scorePerLine;
-            break;
-        case 3:
-            score += possibleLevels[currentLevel].scorePerLine;
-            break;
-        default:
-            score += possibleLevels[currentLevel].scorePerLine;
-            break;
-    }
-    gameScore.innerHTML = score;
-
-    if (score >= possibleLevels[currentLevel].nextLevelScore) {
-        currentLevel++;
-        gameLevel.innerHTML = currentLevel;
-    }
-}
-
-document.onkeydown = function (e) {
-    if (!isPaused) {
-        switch (e.code) {
-            case 'ArrowDown':
-                moveTetroDown();
-                break;
-            case 'ArrowUp':
-                rotateTetro();
-                break;
-            case 'ArrowRight':
-                activeTetro.x += 1;
-                if (hasCollision()) {
-                    activeTetro.x -= 1;
-                }
-                break;
-            case 'ArrowLeft':
-                activeTetro.x -= 1;
-                if (hasCollision()) {
-                    activeTetro.x += 1;
-                }
-                break;
-            case 'Space':
-                dropTetro();
-                break;
-            default:
-                return;
-        }
-
-        updateGameState();
-    }
-};
 
 function reset() {
     isPaused = true;
@@ -329,9 +298,38 @@ function reset() {
     ];
     draw();
     gameOver.style.display = "block";
+    newGame = false;
 }
 
+document.onkeydown = function (e) {
+    if (!isPaused) {
+        switch (e.code) {
+            case 'ArrowDown':
+                moveTetroDown();
+                break;
+            case 'ArrowUp':
+                rotateTetro();
+                break;
+            case 'ArrowRight':
+                activeTetro.x += 1;
+                if (hasCollision()) {
+                    activeTetro.x -= 1;
+                }
+                break;
+            case 'ArrowLeft':
+                activeTetro.x -= 1;
+                if (hasCollision()) {
+                    activeTetro.x += 1;
+                }
+                break;
+            case 'Space':
+                dropTetro();
+                break;
+        }
 
+        updateGameState();
+    }
+};
 
 pauseBtn.addEventListener("click", (e) => {
     if (e.target.innerHTML === "Pause") {
@@ -345,13 +343,17 @@ pauseBtn.addEventListener("click", (e) => {
 });
 
 startBtn.addEventListener("click", (e) => {
-    e.target.innerHTML = "Start again";
-    isPaused = false;
-    gameTimerID = setTimeout(startGame, possibleLevels[currentLevel].speed);
-    gameOver.style.display = "none";
+    if (!newGame) {
+        newGame = true;
+        e.target.innerHTML = "Start again";
+        isPaused = false;
+        gameTimerID = setTimeout(startGame, possibleLevels[currentLevel].speed);
+        gameOver.style.display = "none";
+    }
 });
 
 function updateGameState() {
+
     if (!isPaused) {
         addActiveTetro();
         draw();
@@ -360,6 +362,7 @@ function updateGameState() {
 }
 
 function startGame() {
+    updateGameState();
     moveTetroDown();
     if (!isPaused) {
         updateGameState();
@@ -367,6 +370,7 @@ function startGame() {
     }
 }
 
+gameScore.innerHTML = score;
 gameLevel.innerHTML = currentLevel;
 draw();
 
